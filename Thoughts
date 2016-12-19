@@ -1,0 +1,27 @@
+Thoughts
+
+Use LSTM-RNN
+Features: Some tile-based features using Dim-Red tiles or Kernel convolutions +
+Global Features: Shape [init. Square, Circle], Size [2d?], Position [pixel-based (x,y)], Foreground/Background Color?, Line Thickness, Sharpness [ie. sigma from gaussian convolution on original images]
+
+Initial Values: Random initialization of kxk at the top-left corner of the image, then uses the network to correct the pixels and fill in the rest (top-leftmost pixel will stay random or could always be black or something).
+	Other options: kxk of one color (best if color is not a param).
+		Random initialization outside the image and include generation of the top-left corner, then just crop to match the intended size.
+		Randomly generate entire image, then correct everything.
+		Randomly generate the first k rows and first k columns so that we always have SOME input for the network's input layer
+		Start with full black image, fill in first kxk with network, then use the partially filled windows to compute normal features and pass those to the network (ie. 
+			for filling in (0,1) you use the "left-block" (0,0) with generated features and the "top-block" as (-1,1) by calculating out the first few pixels using (0,0) and computing the tiles of that full area by filling in the uppermost k pixels with black or random)
+		Start with most 100% in most common component and no others, then do the
+			fancy-filling
+
+Path: Sweep kxk across the top, moving one pixel at a time, then moving one pixel down and starting again at the left.
+	Alternate: Snake pattern where you go left->right then down 1 pixel, then right->left
+	Possible Extension: Use two separate sweeps, one sweeping across rows and one across columns then either average or have a function between them.
+
+Network: Input Layer: Tile features above + left, and Global Features [O(50) total]
+	LSTM: 100?x5?
+	Output: Tile features [O(20)]
+
+Outputs: Tile based features consisting of Dim-Red tiles or Kernal tiles like edges
+Average outputs for accuracy
+	Option: Running average so that, for example, the kxk window at (2,1) will also be affected by the kxk windows at (0,0),(0,1),(1,0),(1,1),(2,0) so rather than using the computed features for (2,1), we could use the actual features from averaging the proper pixels from each of those
