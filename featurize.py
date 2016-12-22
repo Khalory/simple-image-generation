@@ -65,27 +65,27 @@ def featurize(shapes, size=(9,9)):
 
 	return model, features
 
-#import shapeGenerator as sg
-#from sklearn.metrics import mean_squared_error
-#circs = sg.randomCircles(1)
-#patches = flattenLast([patcher.toDensePatches(circs[0]['img'])])
-#dimredModel, features = featurize(circs)
-#reconstructedPatches = reconstructPatches(dimredModel, np.reshape(features[:,:,0:numComponents], (-1, numComponents)))
-#print('MSE2')
-#patches = np.reshape(patches, (len(patches[0]), -1))
-#print(np.array(patches).shape)
-#print(np.array(reconstructedPatches).shape)
-#print(mean_squared_error(patches, reconstructedPatches))
-#
-#finalImg = patcher.patchesToImg(reconstructedPatches)
-#print('MSE3')
-#print(mean_squared_error(circs[0]['img'], finalImg))
-#
-#import matplotlib.pyplot as plt
-#plt.figure(figsize=(4.2, 4))
-#plt.subplot(1, 2, 1)
-#plt.imshow(circs[0]['img'], cmap='Greys_r', vmin=0, vmax=1)
-#plt.subplot(1, 2, 2)
-#plt.imshow(finalImg, cmap='Greys_r', vmin=0)
-#plt.show()
+import shapeGenerator as sg
+from sklearn.metrics import mean_squared_error
+circs = sg.randomCircles(1)
+patches = flattenLast([patcher.toDensePatches(circs[0]['img'])])
+dimredModel, features = featurize(circs)
+reconstructedPatches = reconstructPatches(dimredModel, np.reshape(features[:,:,0:numComponents], (-1, numComponents)))
+print('MSE2')
+patches = np.reshape(patches, (len(patches[0]), -1))
+print(np.array(patches).shape)
+print(np.array(reconstructedPatches).shape)
+print(mean_squared_error(patches, reconstructedPatches))
+
+finalImg = patcher.patchesToImg(reconstructedPatches)
+print('MSE3')
+print(mean_squared_error(circs[0]['img'], finalImg))
+
+import matplotlib.pyplot as plt
+plt.figure(figsize=(4.2, 4))
+plt.subplot(1, 2, 1)
+plt.imshow(circs[0]['img'], cmap='Greys_r', vmin=0, vmax=1)
+plt.subplot(1, 2, 2)
+plt.imshow(finalImg, cmap='Greys_r', vmin=0)
+plt.show()
 
